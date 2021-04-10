@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
+
+    <title>Document</title>
+</head>
+
+<body>
+    
+<div class="header">
+  <span id="google_translate_element" style="position: absolute; left:815px;"></span>
+  <h1 id="header">TODOS</h1>
+</div>
+    <p>**Press <i class="fas fa-check-square completed"></i> to mark if the todo is done.<br>**Press <i
+            class="fas fa-trash delete"></i> to delete the todo.<br>**Press <i class="fas fa-edit"
+            style="color:blue"></i> to edit the todo.<br>**To undo a completed todo press on the todo which is having
+        line-through style / is having cancelled out style.</p>
+
+    <br>
+
+    <div class="select">
+    <select id="item">
+        <option value="all">All</option>
+        <option value="completed">Completed</option>
+        <option value="incomplete">Incomplete</option>
+    </select>
+</div>
+    <br><br>
+
+    <form>
+        <input id="inp" name="list" placeholder="Enter the todos...">
+        <button id="sub"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        <input name="id" id="id" hidden>
+        <input name="post" id="post" hidden>
+        <br><br><br>
+        <input name="edit" id="edit" hidden>
+        <button id='done' hidden>Done</button>
+        <span id="cancel" hidden>Cancel</span>
+    </form>
+
+
+    <ul id="listings">
+
+    </ul>
+
+    <br><br><br>
+    
+
+
+
+
+    <style>
+        body {
+            background-image: linear-gradient(120deg, #fa7f5d, #f1c943);
+        }
+
+        h1 {
+            color: black;
+            font-size: 70px;
+            text-align: center;
+            -webkit-box-shadow: 0 0 10px black;
+            box-shadow: 0 0 10px black;
+        }
+
+        /* 
+        #inp{
+            padding:1.5% 33%;
+            border-right: 0px;
+            border:1px solid #fda085;
+            color:black;
+            font-size: 30px;
+        } */
+
+        #edit {
+            padding: 10px 10px;
+            border: none;
+            font-size: 20px;
+            width: 30%;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            appearance: none;
+            outline: 0;
+            box-shadow: none;
+            border: 0 !important;
+            color: #f39c12;
+            background: white;
+            background-image: none;
+        }
+
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        /* Custom Select */
+        .select {
+            margin-left:900px ;
+            position: relative;
+            display: flex;
+            width: 20em;
+            height: 2.9em;
+            line-height: 3;
+            background-color: white;
+            overflow: hidden;
+            border-radius: .25em;
+        }
+
+        select {
+            flex: 1;
+            padding: 0 .3em;
+            color:  #f39c12;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Arrow */
+        .select::after {
+            content: '\25BC';
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0 1em;
+            background:rgb(226, 90, 40) ;
+            cursor: pointer;
+            pointer-events: none;
+            -webkit-transition: .25s all ease;
+            -o-transition: .25s all ease;
+            transition: .25s all ease;
+        }
+
+        /* Transition */
+        .select:hover::after {
+            color:white;
+        }
+
+
+
+        #inp {
+            padding: 20px 40px 20px 20px;
+            border: none;
+            font-size: 30px;
+            width: 85%;
+            -webkit-box-shadow: 0 0 10px black;
+            box-shadow: 0 0 10px black;
+        }
+
+
+        #done,#cancel {
+            padding: 10px;
+            font-size: 20px;
+            margin-left: -5px;
+            border: none;
+            color: white;
+            background-color: rgb(226, 90, 40);
+            cursor: pointer;
+        }
+
+        #done{
+            margin-right: 5px;
+            margin-left: 1px;
+        }
+
+        #done:hover {
+            background-color: white;
+            color: rgb(226, 90, 40);
+        }
+        
+        #cancel:hover {
+            background-color: white;
+            color: rgb(226, 90, 40);
+        }
+
+        #sub {
+            padding: 20px;
+            font-size: 30px;
+            margin-left: -5px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            background-color: rgb(226, 90, 40);
+            -webkit-box-shadow: 0 0 10px black;
+            box-shadow: 0 0 10px black;
+        }
+
+        #sub:hover {
+            background-color: white;
+            color: rgb(226, 90, 40);
+            -webkit-box-shadow: 0 0 10px black;
+            box-shadow: 0 0 10px black;
+        }
+
+        #listings {
+            width: auto;
+            /* width: min-content; */
+        }
+
+        .delete {
+            color: red;
+        }
+
+        #listings li {
+            margin-top: 10px;
+            background-color: honeydew;
+            -webkit-box-shadow: 0 0 10px black;
+            box-shadow: 0 0 10px black;
+            width: auto;
+            margin-right: 80px;
+            list-style: none;
+            padding: 20px;
+            font-size: 30px;
+        }
+
+
+
+
+
+        #google_translate_element {
+  text-align: right;
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+}
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+
+
+        .completed {
+            color: green;
+        }
+
+        /* #listings li .completed{
+            margin-left:400px ;
+        } */
+
+        /* #listings li .delete{
+            margin-left:400px ;
+        } */
+
+        /* #listings li .edits{
+            margin-left:40px ;
+        } */
+
+        #listings li .complete,
+        .deletes,
+        .edits {
+            font-size: 30px;
+        }
+
+        .list{
+            margin-left: 20px;
+        }
+
+        .completeds {
+            text-align: center;
+            cursor: pointer;
+            color: green;
+            margin-left: 20px;
+        }
+
+        .deleteds {
+            text-align: center;
+            cursor: pointer;
+            justify-content: end;
+            color: red;
+            margin-left: 20px;
+        }
+
+        .edits {
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+
+
+
+        .complete {
+            text-decoration: line-through;
+            margin-left: 20px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.5s cubic-bezier(.55, 0, .1, 1);
+        }
+
+        .completes {
+            text-decoration: line-through;
+            margin-left: 20px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.5s cubic-bezier(.55, 0, .1, 1);
+        }
+    </style>
+
+
+
+<script src="jquery-3.5.1.min.js"></script>
+
+
+
+<script>
+
+  //Google Translate
+  function setCookie(key, value, expiry) {
+    var expires = new Date();
+    expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+    document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+  }
+
+
+
+ 
+
+    function googleTranslateElementInit() {
+      setCookie('googtrans', `/en`, 1);
+      new google.translate.TranslateElement(
+        { pageLanguage: 'en' },
+        'google_translate_element'
+      );
+    
+  } 
+
+</script>
+
+<script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+
+
+        //completed
+        $.ajax({
+            method: 'GET',
+            url: '/complete',
+        }).done(function (data) {
+            $.each(data, function (ind, val) {
+
+                var completed = val.complete;
+                var completedTodo = $(`<li><span class="completes">${completed}</span> <span class="deletes"><i class="fas fa-trash deleteds"></i></span></li>`);
+                $('#listings').append(completedTodo.css('background-color', 'lightgreen'))
+                completedTodo.data('user', val);
+                completedTodo.data('new', val);
+            })
+
+            console.log(data);
+        })
+
+
+        $(document).ready(function () {
+
+            $('#item').change(function (e) {
+                e.preventDefault();
+                var val = $('#item').val();
+                //    console.log(val);
+
+                //completed
+                if (val == 'completed') {
+                    $('#listings > li').remove();
+                    $.ajax({
+                        method: 'GET',
+                        url: '/complete',
+                    }).done(function (data) {
+                        $.each(data, function (ind, val) {
+                            console.log(val);
+
+                            var completed = val.complete;
+                            var completedTodo = $(`<li><span class="completes">${completed}</span> <span class="deletes"><i class="fas fa-trash deleteds"></i></span></li>`);
+                            $('#listings').append(completedTodo.css('background-color', 'lightgreen'))
+                            completedTodo.data('user', val)
+                            completedTodo.data('new',val)
+                        })
+
+                        $('#listings').on('click', '.completes', function () {
+                // setTimeout(function () {
+                //     location.reload(true);
+                // }, 300);
+                let id = $(this).parent().data('new').id;
+                let todo = $(this).parent().data('new').complete;
+                $('#id').val(id);
+                $('#post').val(todo);
+                $.post('/complist', $('form').serialize());
+            })
+
+            $('#listings').on('click', '.completes', function () {
+                let id = $(this).parent().data('new').id;
+                $.ajax({
+                    method: 'delete',
+                    url: '/complete/' + id,
+                }).done(function (data) {
+                    console.log(data);
+                })
+            })
+                        
+                    })
+
+
+                } else if (val == 'all') {
+
+                    $('#listings > li').remove();
+                    $.ajax({
+                        method: 'GET',
+                        url: '/complete',
+                    }).done(function (data) {
+                        $.each(data, function (ind, val) {
+                            var completed = val.complete;
+                            var completedTodo = $(`<li><span class="completes">${completed}</span> <span class="deletes"><i class="fas fa-trash deleteds"></i></span></li>`);
+                            $('#listings').append(completedTodo.css('background-color', 'lightgreen'))
+                            completedTodo.data('user', val)
+                        })
+                    })
+                    $.ajax({
+                        method: 'GET',
+                        url: '/lists',
+                    }).done(function (data) {
+                        $.each(data, function (ind, val) {
+                            //Important
+                            var temp = $(`<li><span class="list">${val.todo}</span><span class="complete"><i class="fas fa-check-square completeds"></i></span><span class="edits"> <i class="fas fa-edit"  style="color:blue"></i></span> <span class="deletes"><i class="fas fa-trash deleteds"></span></li>`);
+
+                            //Seperate up and down part and then append
+                            $('#listings').append(temp);
+                            temp.data('user', val)
+                        })
+                    })
+
+
+                } else if (val == 'incomplete') {
+                    $('#listings > li').remove();
+                    $.ajax({
+                        method: 'GET',
+                        url: '/lists',
+                    }).done(function (data) {
+                        $.each(data, function (ind, val) {
+                            //Important
+                            var temp = $(`<li><span class="list">${val.todo}</span><span class="complete"><i class="fas fa-check-square completeds"></i></span><span class="edits"> <i class="fas fa-edit"  style="color:blue"></i></span> <span class="deletes"><i class="fas fa-trash deleteds"></span></li>`);
+
+                            //Seperate up and down part and then append
+                            $('#listings').append(temp);
+                            temp.data('user', val)
+                        })
+                    })
+                    $('#listings').on('click', '.completes', function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 300);
+                let id = $(this).parent().data('new').id;
+                let todo = $(this).parent().data('new').complete;
+                $('#id').val(id);
+                $('#post').val(todo);
+                $.post('/complist', $('form').serialize());
+            })
+
+            $('#listings').on('click', '.completes', function () {
+                let id = $(this).parent().data('new').id;
+                $.ajax({
+                    method: 'delete',
+                    url: '/complete/' + id,
+                }).done(function (data) {
+                    console.log(data);
+                })
+            })
+                }
+            })
+
+
+            $('#listings').on('click', '.completes', function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 300);
+                let id = $(this).parent().data('new').id;
+                let todo = $(this).parent().data('new').complete;
+                $('#id').val(id);
+                $('#post').val(todo);
+                $.post('/complist', $('form').serialize());
+            })
+
+            $('#listings').on('click', '.completes', function () {
+                let id = $(this).parent().data('new').id;
+                $.ajax({
+                    method: 'delete',
+                    url: '/complete/' + id,
+                }).done(function (data) {
+                    console.log(data);
+                })
+            })
+
+
+
+
+
+            $('#sub').click(function (e) {
+                e.preventDefault();
+                var value = $('#inp').val().trim().length
+                if (value >= 1) {
+
+                    $('#listings').fadeIn(1000).append(`<li class="lists">${$('#inp').val()}<span class="complete"><i class="fas fa-check-square completeds"></i><span class="edits"><i class="fas fa-edit edites"  style="color:blue"></i></span></span> <span class="deletes"><i class="fas fa-trash delete"></span></li>`);
+                    $.post('/lists', $('form').serialize())
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 0);
+                } else {
+                    alert('Todo list cannot be empty');
+                }
+
+                $('#inp').val('');
+            })
+
+
+            $('form input').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            })
+
+
+            $.ajax({
+                method: 'GET',
+                url: '/lists',
+            }).done(function (data) {
+                $.each(data, function (ind, val) {
+                    //Important
+                    var temp = $(`<li><span class="list">${val.todo}</span><span class="complete"><i class="fas fa-check-square completeds"></i></span><span class="edits"> <i class="fas fa-edit"  style="color:blue"></i></span> <span class="deletes"><i class="fas fa-trash deleteds"></span></li>`);
+
+                    //Seperate up and down part and then append
+                    $('#listings').append(temp);
+
+
+                    //Get the data
+                    temp.data('user', val);
+                })
+
+                console.log(data);
+            })
+
+
+
+            $('#listings').on('click', '.complete', function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 900);
+                $(this).next().fadeOut(800);
+                $(this).fadeOut(800);
+                $(this).parent().fadeIn(400).css('background-color', 'lightgreen')
+                $(this).siblings().first().css({ 'animation': 'strike 5s linear .3s 1 forwards' }).css({ 'text-decoration': 'line-through' });
+            })
+
+
+
+
+
+
+            $('#listings').on('click', '.complete', function () {
+
+                let id = $(this).parent().data('user').id;
+                let complete = $(this).parent().data('user').todo;
+                $('#id').val(id);
+                $('#post').val(complete);
+                $.post('/complete', $('form').serialize());
+                $(this).off()
+                // $.post('/complete',$(complete).serialize());
+            })
+
+
+            $('#listings').on('click', '.complete', function () {
+                // setTimeout(function () {
+                //     location.reload(true);
+                // }, 300);
+                let id = $(this).parent().data('user').id;
+                let complete = $(this).parent().data('user').todo;
+                console.log(complete);
+                if (complete != undefined) {
+                    $.ajax({
+                        method: 'Delete',
+                        url: ' /lists/' + id
+                    }).done(function (data) {
+                        console.log(data);
+                    })
+                }
+                $(this).off()
+            })
+
+
+
+            $('#listings').on('click', '.deletes', function () {
+                // setTimeout(function () {
+                //     location.reload(true);
+                // }, 300);
+                let ids = $(this).parent().data('user').id;
+
+                $.ajax({
+                    method: 'delete',
+                    url: '/lists/' + ids,
+                }).done(function (data) {
+                    console.log(data);
+                })
+                $(this).off()
+            })
+
+
+            $('#listings').on('click', '.deletes', function () {
+                $(this).parent().fadeOut(1000);
+            })
+
+            $('#listings').on('click', '.deletes', function () {
+                // setTimeout(function () {
+                //     location.reload(true);
+                // }, 400);
+                let id = $(this).parent().data('user').id;
+                $.ajax({
+                    method: 'delete',
+                    url: '/complete/' + id,
+                }).done(function (data) {
+                    console.log(data);
+                })
+                $(this).off()
+            })
+
+
+
+
+
+            $('#listings').on('click', '.edits', function () {
+                $('#edit').show();
+                $('#done').show();
+                $('#cancel').show();
+                let id = $(this).parent().data('user').id;
+                var valueOfEdit = $(this).siblings().first().text();
+                $('#edit').val(valueOfEdit);
+                console.log(valueOfEdit);
+                console.log()
+                console.log(id);
+                $('#id').val(id);
+            })
+
+
+
+            $('#done').on('click', function (e) {
+                e.preventDefault();
+                setTimeout(function () {
+                    location.reload(true);
+                }, 400);
+                var id = $('#id').val();
+                console.log(id);
+                var value = $('#edit').val().trim();
+                console.log(value.length);
+                if (value.length > 0) {
+                    console.log(value);
+                    $.ajax({
+                        method: 'PUT',
+                        url: '/lists/' + id,
+                        data: $('form').serialize(),
+                    }).done(function (data) {
+                        console.log(data);
+                    })
+                } else {
+                    alert('Todo cannot be empty')
+                }
+            })
+            $('#cancel').on('click',function(){
+                setTimeout(function () {
+                    location.reload(true);
+                }, 300);
+            })
+
+        })
+
+
+  //Google translate
+  $('#trans').click(function () {
+    $('#trans').click(function () {
+      google.language.translate($('#some').html(), 'en', 'fr', function (result) {
+        $('#some').html(result.translation);
+      });
+    });
+  })
+    </script>
+
+</body>
+
+</html>
